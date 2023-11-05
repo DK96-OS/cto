@@ -1,0 +1,5 @@
+Header 1:
+*c NewFile.txt - add content
+*u NewFile.txt - update content
+*r NewFile.txt - remove content
+*m NewFile.txt - move content

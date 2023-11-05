@@ -1,0 +1,12 @@
+
+Header:
+* Cr NewFile.txt - add content
+* Up NewFile.txt - update content
+* Re NewFile.txt - remove content
+* Mv NewFile.txt - move content
+
+Header:
+* C NewFile.txt - add file
+* U NewFile.txt - update info
+* R NewFile.txt - remove file
+* M NewFile.txt - move file
