@@ -1,27 +1,24 @@
 """ Detects Commit Line Prefix tags and generates formatted output.
 """
 
-generatedPrefixes = {
+line_prefix_map = {
     'c': 'Create',
+    'cr': 'Create',
+    'd': 'Delete',
+    'del': 'Delete',
     'f': 'Fix',
     'm': 'Move',
+    'mv': 'Move',
     'r': 'Remove',
+    're': 'Remove',
     't': 'Test',
     'u': 'Update',
-}
-
-# A Map from additional Commit Line Prefixes to their corresponding generators
-expandingPrefixes = {
-    'cr': 'c',
-    'del': 'r',
-    'mv': 'm',
-    're': 'r',
-    'up': 'u',
-    'upd': 'u',
+    'up': 'Update',
+    'upd': 'Update',
 }
 
 
-def update_line(line: str) -> str | None:
+def map_line_prefix(line: str) -> str | None:
     """ Searches for a Prefix or a close match and returns a formatted line if found.
         Does not care about upper and lower case.
     :returns: The updated line or None if no prefix was found.
@@ -35,9 +32,7 @@ def update_line(line: str) -> str | None:
     prefix = line.split(' ')[0].lower()
 
     # Check if it is a valid prefix
-    if prefix in generatedPrefixes:
-        return '* ' + generatedPrefixes[prefix] + line[len(prefix):]
-    elif prefix in expandingPrefixes:
-        return '* ' + generatedPrefixes[expandingPrefixes[prefix]] + line[len(prefix):]
+    if prefix in line_prefix_map:
+        return '* ' + line_prefix_map[prefix] + line[len(prefix):]
 
     return None

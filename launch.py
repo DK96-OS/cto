@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from commit_organizer import CommitTextOrganizer
-from files.file_names import create_new_file_name
+from files.file_management import create_new_file_name
 
 
 def run_commit_text_organizer(
