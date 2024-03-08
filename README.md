@@ -1,6 +1,9 @@
-# Commit-Text-Organizer
+# Commit Text Organizer
 Do you like to organize your commit messages?
-Follow this simple system while creating your commit messages, and then when it comes time to squash your commits, run Commit-Text-Organizer to clean and categorize all of those messages.
+
+This system prescribes a method of structuring your commit messages, so that when you squash them they can be organized into groups.
+
+Run CTO's `launch.py` script. It will prompt you for a file name.
 
 ## Requirements
 Python 3.10 or higher is required to run __Commit-Text-Organizer__.
@@ -34,27 +37,26 @@ If a separator appears more than once in a Commit Line, it is ignored.
 ### Line Prefix Shortcuts
 To reduce typing the same word for so many file changes (such as "Update", or "Create"), CTO includes a Line Prefix recognition and replacement feature.
 
-     cto/text/generation/commit_line_prefixes.py  
+     cto/text/commit_line_prefixes.py  
 
 It recognizes prefixes (that you can change) and replaces them with the most commonly used words.
 
-#### Existing Prefixes
+#### Commit Line Prefixes
 | Shortcut | Prefix |
 |----------|--------|
 | c | Create |
+| d | Delete |
 | f | Fix |
 | m | Move |
 | r | Remove |
 | t | Test |
 | u | Update |
 
-#### Existing Secondary Prefixes
-There are also secondary prefixes that can be based on more than one character, and map to other prefixes.
-
+#### Additional Prefixes
 | Shortcut | Prefix |
 |----------|--------|
 | cr | Create |
-| del | Remove |
+| del | Delete |
 | mv | Move |
 | up | Update |
 
@@ -96,6 +98,7 @@ The sort lines in groups method of CommitTextGroup will sort the group's message
 The Launch script prompts user for a path, reads a file and runs Commit-Text-Organizer on it's contents. 
 
 The output will be written to a similar file path with a "-org" suffix attached.
+Any file with an extension should use ".txt".
 
 #### Windows Compatibility
 The file extension must be (.txt).
