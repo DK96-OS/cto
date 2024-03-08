@@ -1,5 +1,6 @@
 """ Commit Line Class and supporting methods.
 """
+from text.commit_line_prefixes import map_line_prefix
 
 # Subject is separated from content by a separator
 subject_separators = ('-', '+')
@@ -38,8 +39,7 @@ class CommitLine:
         self._updated_line = line.strip()
         # Begin Processing the Line
         # Expand Commit Line Prefixes
-        from text.generation import commit_line_prefixes
-        expanded_line = commit_line_prefixes.update_line(self._updated_line)
+        expanded_line = map_line_prefix(self._updated_line)
         if expanded_line is not None:
             self._updated_line = expanded_line
         # Find the Subject Separator
