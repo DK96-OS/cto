@@ -4,7 +4,7 @@
 line_prefix_map = {
     'c': 'Create',
     'cr': 'Create',
-    'd': 'Delete'
+    'd': 'Delete',
     'del': 'Delete',
     'f': 'Fix',
     'm': 'Move',
