@@ -1,17 +1,40 @@
-# Commit Text Organizer
-Do you like to organize your commit messages?
+## Commit Text Organizer
+Do you like to organize your commit messages? __CTO does!__
 
-This system prescribes a method of structuring your commit messages, so that when you squash them they can be organized into groups.
+CTO likes commit messages in a readable format. The format is called FOCI.
 
-Run CTO's `launch.py` script. It will prompt you for a file name.
+### File Oriented Commit Information (FOCI)
+___A Commit may target multiple files, but it has only one purpose.___
 
-## Requirements
-Python 3.10 or higher is required to run __Commit-Text-Organizer__.
-This is because the Union Type Operator is used (not available in 3.9 or earlier).
+<details>
+<summary>FOCI Concepts</summary>
+
+- __Headers__
+  - Signify the start of a commit message group
+  - Make it easier to categorize and locate related changes
+- __Commit Lines__
+  - Lines grouped together under each header
+  - Detail changes to files or groups of files
+  - Enhancing traceability and readability
+- __Subjects__
+  - The start of a Commit Line
+  - Indicating the file or group of files
+  - Allowing for quick identification of affected areas
+- __Content Details__
+  - The end of a Commit Line
+  - Comma separated list of text describing specific changes
+  - Providing clarity on the nature of the modification.
+</details>
+
+CTO and FOCI ensure that commit messages are well-organized and convey the intended changes in a clear, concise manner. This is key to making revision history easy to revisit.
 
 ## Commit Message Structure
-You commit messages are organized into high level groups, which are defined by their header name.
+At a high level, messages are organized into groups.
 
+<details>
+<summary>Each group has a unique header name.</summary>
+
+### Headers
 Structure your commits using your own set of headers, such as:
 - Database Migration 32
 - Database Integration
@@ -20,7 +43,10 @@ Structure your commits using your own set of headers, such as:
 When writing commits, ensure that you add a colon (:) immediately after the header name.
 
 Then, the lines immediately below the header are included in that group. These are called Commit Lines.
-
+</details>
+<details>
+<summary>A Commit Line starts with a subject, corresponding to a file, or group of files.</summary>
+     
 ### Subjects (Files or Groups of Files)
 A Subject is the start of a Commit Line in a header Group. It will usually describe a change in a single file, but you can group files into the subject.
 
@@ -33,15 +59,19 @@ When Content details are merged, they are separated from the Subject, sorted alp
 The subject is separated from content details by one of these separators: (+) or (-).
 
 If a separator appears more than once in a Commit Line, it is ignored.
+</details>
 
-### Line Prefix Shortcuts
+<details>
+<summary>A subject may include a verb, such as "Update", which can be replaced with a prefix shortcut.</summary>
+
+### Commit Line Prefix Shortcuts
 To reduce typing the same word for so many file changes (such as "Update", or "Create"), CTO includes a Line Prefix recognition and replacement feature.
 
      cto/text/commit_line_prefixes.py  
 
 It recognizes prefixes (that you can change) and replaces them with the most commonly used words.
 
-#### Commit Line Prefixes
+#### Commit Line Prefix Shortcuts
 | Shortcut | Prefix |
 |----------|--------|
 | c | Create |
@@ -51,14 +81,11 @@ It recognizes prefixes (that you can change) and replaces them with the most com
 | r | Remove |
 | t | Test |
 | u | Update |
-
-#### Additional Prefixes
-| Shortcut | Prefix |
-|----------|--------|
 | cr | Create |
 | del | Delete |
 | mv | Move |
 | up | Update |
+</details>
 
 #### Important Commit Line Characters
 - A header ends with a colon ":"
@@ -67,7 +94,12 @@ It recognizes prefixes (that you can change) and replaces them with the most com
 - Subject is separated from content by (+) or (-)
 - Content may contain multiple changes that are comma-separated
 
-### Example
+### Sorting
+By default, your squashed PR message will have groups organized alphabetically by their header names.
+- Subjects within each group are sorted alphabetically
+- Sorting is done after applying Commit Line Prefix Shortcuts.
+
+## Example
 __Input:__
 ```
 Header 1:
@@ -90,18 +122,24 @@ Header 2:
 * Remove OldFile.c
 ```
 
-### Sorting
-The sort method of CommitOrganizer will combine groups with matching headers.
-The sort lines in groups method of CommitTextGroup will sort the group's messages alphabetically. 
+## How It Works
+1. __Launch Script__: The user starts by running the launch.py script, which prompts for a file path. This file contains the commit messages to be organized.
+2. __Commit Message Structure__: Commit messages are organized into groups defined by headers (e.g., "Database Migration 32"). Each group contains commit lines starting with a star (*) and details changes to subjects (files or groups of files).
+3. __Subject Matching and Content Details__: Commit lines within the same header group can be merged if their subjects match. The tool sorts and joins content details alphabetically, separated by a comma-space.
+4. __Line Prefix Shortcuts__: To simplify repetitive prefixes like "Update" or "Create", CTO includes a feature to recognize and replace line prefix shortcuts with their full forms (e.g., "c" for "Create").
+5. __Sorting and Output__: The tool sorts groups and lines within groups alphabetically. The output is written to a new file with a "-org" suffix, containing the organized commit messages.
 
-### Launch (Python) Script
-The Launch script prompts user for a path, reads a file and runs Commit-Text-Organizer on it's contents. 
+### Requirements
+Python 3.10 or higher is required to run __Commit-Text-Organizer__.
+This is because the Union Type Operator is used (not available in 3.9 or earlier).
 
-The output will be written to a similar file path with a "-org" suffix attached.
-Any file with an extension should use ".txt".
-
-#### Windows Compatibility
+### Windows Compatibility
 The file extension must be (.txt).
 
 ## Project Vision
-The vision for this project is to advance to a multi-functional command line tool and interface that does more commit message text management, so developers like you and me can do less.
+To enhance developer usability and broaden its applicability.
+Enhancements aim to make CTO more versatile, user-friendly, and integrated with developers' workflows.
+- Develop a more robust CLI experience
+- Introduce command-line help documentation
+- Implement a feature to directly read commit messages from a branch
+- Allow users to add their own prefix shortcuts in a config file
