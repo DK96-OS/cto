@@ -22,7 +22,7 @@ def run_commit_text_organizer(
     # Return all Groups of Text
     output_data = org.output_all_groups()
     # Write the Result to the File
-    write_file(input_data.output_file_name, output_data)
+    write_file(output_file, output_data)
 
 
 # Request keyboard input
