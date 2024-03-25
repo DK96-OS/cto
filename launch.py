@@ -1,26 +1,26 @@
 #!/usr/bin/python3
 from sys import exit
 
-from text.commit_text_organizer import CommitTextOrganizer
 from files.file_management import read_file, write_file, create_new_file_name
+from text import process_with_cto
 
 
 def run_commit_text_organizer(
         input_file: str,
         output_file: str
 ):
-    """ To Run requires in and out file paths.
+    """ Run CTO on the Input file name
+
+    Parameters:
+    - input_file (str): The name of the file to read.
+    - output_file (str): The name of the output file.
     """
-    # Load the Input File
     if (input_data := read_file(input_file)) is None:
         exit('Failed to Read Input File')
-    # Create an instance of the CTO data structure
-    org = CommitTextOrganizer()
-    org.receive_data(input_data)
-    org.autoprocess() # Default Processing Operations
-    # Return all Groups of Text
-    output_data = org.output_all_groups()
-    # Write the Result to the File
+    output_data = process_with_cto(input_data)
+   	# If output is empty, prevent file write
+   	if output_data is None or len(output_data) == 0:
+   		exit("CTO returned zero Text!")
     write_file(output_file, output_data)
 
 
