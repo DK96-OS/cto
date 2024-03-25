@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from sys import exit
 
-from commit_organizer import CommitTextOrganizer
+from text.commit_text_organizer import CommitTextOrganizer
 from files.file_management import read_file, write_file, create_new_file_name
 
 
