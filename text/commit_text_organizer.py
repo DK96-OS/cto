@@ -1,5 +1,5 @@
 """ Processes an input string into groups of text """
-from text.commit_text_group import CommitTextGroup, merge_groups
+from .commit_text_group import CommitTextGroup, merge_groups
 
 
 class CommitTextOrganizer:
