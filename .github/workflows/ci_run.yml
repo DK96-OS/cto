@@ -26,7 +26,7 @@ jobs:
         run: python3 -m pip install --user pytest pytest-cov
 
       - name: Run unit tests
-        run: pytest tests/ --cov=files --cov=text --cov-report=html --cov-fail-under=77
+        run: pytest tests/ --cov=files --cov=text --cov-report=html --cov-fail-under=81
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v3
