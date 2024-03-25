@@ -20,7 +20,7 @@ input_text_3 = """
 
 
 class TestCommitTextGroup(unittest.TestCase):
-	
+
 	def setUp(self):
 		self.header_1 = "* Header 1:"
 		self.header_1_processed = "Header 1:"
@@ -146,3 +146,30 @@ class TestCommitTextGroup(unittest.TestCase):
 		self.assertEqual(
 			"* Message 2 - 6", result_lines[2]
 		)
+
+
+def test_get_lines_as_commit_line_array_empty_returns_empty_list():
+	inst = CommitTextGroup(None, [])
+	assert inst.get_lines_as_commit_line_array() == []
+
+
+def test_get_lines_as_str_array_empty_returns_empty_list():
+	inst = CommitTextGroup(None, [])
+	assert inst.get_lines_as_str_array() == []
+
+
+def test_get_lines_as_str_array_single_element_returns_element():
+	input_line = '*u my_file.py'
+	expected_line = '* Update my_file.py'
+	inst = CommitTextGroup(None, [input_line])
+	assert inst.get_lines_as_str_array() == [expected_line]
+
+
+def test_add_line_empty_str_returns_false():
+	inst = CommitTextGroup(None, [])
+	assert inst.add_line('') == False
+
+
+def test_add_line_unknown_type_returns_false():
+	inst = CommitTextGroup(None, [])
+	assert inst.add_line(1) == False
