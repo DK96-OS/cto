@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+from sys import exit
 
 from commit_organizer import CommitTextOrganizer
-from files.file_management import create_new_file_name
+from files.file_management import read_file, write_file, create_new_file_name
 
 
 def run_commit_text_organizer(
@@ -13,11 +14,15 @@ def run_commit_text_organizer(
     # Create an instance of the CTO data structure
     org = CommitTextOrganizer()
     # Load the Input File
-    org.read_file(input_file)
+    if (input_data := read_file(input_file)) is None:
+        exit('Failed to Read Input File')
+    org.receive_data(input_data)
     # Default Processing Operations
     org.autoprocess()
-    # Write the Result to a File
-    org.write_to_file(output_file)
+    # Return all Groups of Text
+    output_data = org.output_all_groups()
+    # Write the Result to the File
+    write_file(input_data.output_file_name, output_data)
 
 
 # Request keyboard input
