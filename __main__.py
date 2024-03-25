@@ -12,10 +12,10 @@ def main():
     # Load the Input File
     if (input_data := read_file(input_file)) is None:
         exit('Failed to Read Input File')
-   	output_data = process_with_cto(input_data)
-   	# If output is empty, prevent file write
-   	if output_data is None or len(output_data) == 0:
-   		exit("CTO returned zero Text!")
+    output_data = process_with_cto(input_data)
+    # If output is empty, prevent file write
+    if output_data is None or len(output_data) == 0:
+        exit("CTO returned zero Text!")
     write_file(output_file, output_data)
 
 
