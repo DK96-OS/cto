@@ -11,21 +11,6 @@ class CommitTextOrganizer:
 		# The PR group will be added to the Groups, so it can be sorted
 		self.pr_group = None
 
-	def read_file(
-			self,
-			file_path: str
-	) -> bool:
-		""" Read and Receive data from a File.
-			Returns True if the file was loaded successfully
-		"""
-		from files.file_management import read_file
-		data = read_file(file_path)
-		if data is not None:
-			self.receive_data(data)
-			return True
-		else:
-			return False
-
 	def receive_data(
 			self,
 			data: str
@@ -77,20 +62,6 @@ class CommitTextOrganizer:
 			self.groups.append(self.pr_group)
 		# Prepend a * to the line
 		self.pr_group.add_line('* ' + line)
-
-	def write_to_file(
-			self,
-			file_name: str
-	) -> bool:
-		""" Write all Groups to a File.
-		"""
-		data = self.output_all_groups()
-		if data is None:
-			return False
-		from files.file_management import write_file
-		return write_file(
-			file_name, data
-		)
 
 	def clear(self):
 		""" Removes all temporary data.
