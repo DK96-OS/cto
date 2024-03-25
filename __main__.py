@@ -2,8 +2,8 @@
 from pathlib import Path
 from sys import argv
 
-from text.commit_text_organizer import CommitTextOrganizer
 from files.file_management import read_file, write_file, create_new_file_name
+from text import process_with_cto
 
 
 def main():
@@ -12,12 +12,10 @@ def main():
     # Load the Input File
     if (input_data := read_file(input_file)) is None:
         exit('Failed to Read Input File')
-    # Process with CTO
-    org = CommitTextOrganizer()
-    org.receive_data(input_data)
-    org.autoprocess() # Default Processing Operations
-    output_data = org.output_all_groups()
-    # Write the Result to the File
+   	output_data = process_with_cto(input_data)
+   	# If output is empty, prevent file write
+   	if output_data is None or len(output_data) == 0:
+   		exit("CTO returned zero Text!")
     write_file(output_file, output_data)
 
 
