@@ -2,7 +2,7 @@
 import os
 import unittest
 
-from files.file_management import read_file
+from files.io import read_file
 from text.commit_text_organizer import CommitTextOrganizer
 
 
