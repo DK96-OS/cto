@@ -49,7 +49,7 @@ class CommitTextOrganizer:
 				self.add_pull_request_line(li)
 				newline_count = 0
 			else:
-				print(f"Unknown Line {str(lines.index(next_line))} : {li}")
+				print(f"Unknown Line {str(1 + lines.index(next_line))} : {li}")
 
 	def add_pull_request_line(
 			self,

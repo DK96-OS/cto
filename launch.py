@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 from sys import exit
 
-from files.file_management import read_file, write_file, create_new_file_name
+from files.io import read_file, write_file
+from files.names import create_new_file_name
 from text import process_with_cto
 
 
@@ -19,8 +20,8 @@ def run_commit_text_organizer(
         exit('Failed to Read Input File')
     output_data = process_with_cto(input_data)
    	# If output is empty, prevent file write
-   	if output_data is None or len(output_data) == 0:
-   		exit("CTO returned zero Text!")
+    if output_data is None or len(output_data) == 0:
+        exit("CTO returned zero Text!")
     write_file(output_file, output_data)
 
 

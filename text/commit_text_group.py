@@ -129,14 +129,12 @@ class CommitTextGroup:
     def __str__(self):
         """ Obtain the whole Commit Text Group as a String.
         """
-        if 0 == len(self._commit_lines):
-            line_items = ""
-        else:
-            line_items = "\n".join(str(s) for s in self._commit_lines)
-        #
+        line_items = "\n".join(str(s) for s in self._commit_lines)
         if self._header is None:
             return line_items
         # Combine Header and Lines
+        if len(line_items.strip()) < 1:
+            return self.get_header()
         return self.get_header() + "\n" + line_items
 
 

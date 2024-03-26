@@ -2,7 +2,8 @@
 from pathlib import Path
 from sys import argv
 
-from files.file_management import read_file, write_file, create_new_file_name
+from files.io import read_file, write_file
+from files.names import create_new_file_name
 from text import process_with_cto
 
 
@@ -12,6 +13,7 @@ def main():
     # Load the Input File
     if (input_data := read_file(input_file)) is None:
         exit('Failed to Read Input File')
+    # Process Text
     output_data = process_with_cto(input_data)
     # If output is empty, prevent file write
     if output_data is None or len(output_data) == 0:

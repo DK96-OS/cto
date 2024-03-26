@@ -1,6 +1,6 @@
 import unittest
 
-from tests.cto_samples import assert_sample_expectations
+from tests.cto_samples.assertions import assert_sample_expectations
 
 _sample_prefix = 'challenge/challenge_'
 _sample_count = 2
