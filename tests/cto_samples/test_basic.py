@@ -1,6 +1,6 @@
 import unittest
 
-from tests.cto_samples import assert_sample_expectations
+from tests.cto_samples.assertions import assert_sample_expectations
 
 # The Sample Prefix points to the input and output files
 _sample_prefix = 'basic/basic_'
