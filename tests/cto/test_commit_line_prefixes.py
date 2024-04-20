@@ -1,6 +1,6 @@
 import unittest
 
-from text.commit_line_prefixes import map_line_prefix
+from commit_text_organizer.commit_line_prefixes import map_line_prefix
 
 
 class TestCommitLinePrefixes(unittest.TestCase):

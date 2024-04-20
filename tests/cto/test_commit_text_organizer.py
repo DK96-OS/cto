@@ -1,5 +1,6 @@
 import unittest
-from text.commit_text_organizer import CommitTextOrganizer
+
+from commit_text_organizer.commit_text_organizer import CommitTextOrganizer
 
 
 class TestCommitTextOrganizer(unittest.TestCase):

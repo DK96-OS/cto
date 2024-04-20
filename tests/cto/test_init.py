@@ -1,6 +1,6 @@
 """Testing the Text Package Init Method"""
 
-from text import process_with_cto as cto
+from commit_text_organizer import process_with_cto as cto
 
 
 def test_cto_empty_str_returns_none():

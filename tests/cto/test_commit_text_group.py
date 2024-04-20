@@ -1,5 +1,6 @@
 import unittest
-from text.commit_text_group import *
+
+from commit_text_organizer.commit_text_group import *
 
 
 input_text_1 = """
