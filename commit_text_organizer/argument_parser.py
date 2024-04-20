@@ -9,9 +9,8 @@ from sys import exit
 from typing import Optional
 
 from commit_text_organizer.argument_data import ArgumentData
-from commit_text_organizer.string_validation import validate_name
 from commit_text_organizer.input_data import InputData
-from commit_text_organizer.file_validation import validate_input_file
+from commit_text_organizer.file_validation import validate_input_file, validate_name
 
 
 def validate_input(arguments: Optional[list[str]] = None) -> InputData:

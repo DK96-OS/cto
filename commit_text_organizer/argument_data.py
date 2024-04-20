@@ -14,7 +14,7 @@ class ArgumentData:
     The arguments received by Argument Parser.
 
     Properties:
-    - input_file_path_str (str): The Name of the File containing the input.
+    - input_file_name (str): The Name of the File containing the input.
     """
 
     input_file_name: str
