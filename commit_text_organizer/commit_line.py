@@ -1,31 +1,12 @@
 """ Commit Line Class and supporting methods.
 """
-from text.commit_line_prefixes import map_line_prefix
+from commit_text_organizer.commit_line_prefixes import map_line_prefix
 
 # Subject is separated from content by a separator
 subject_separators = ('-', '+')
 
-# The Minimum Subject Length
+# The Minimum Subject Length, otherwise line is content
 min_subject_length = 2
-
-
-def find_subject_separator(
-    line: str
-) -> int | None:
-    """ Find the Subject separator.
-        Returns None if separator not found.
-    """
-    idx_list = (line.find(sep) for sep in subject_separators)
-    min_idx = -1
-    for i in idx_list:
-        if min_subject_length <= i:
-            if min_idx == -1 or i < min_idx:
-                min_idx = i
-    # Only Return Positive Indices
-    if min_idx >= min_subject_length:
-        return min_idx
-    else:
-        return None
 
 
 class CommitLine:
@@ -68,14 +49,17 @@ class CommitLine:
                     self._content = None
 
     def get_subject(self) -> str | None:
-        """  """
+        """ Obtain the Subject, if present.
+        """
         return self._subject
 
     def get_separator(self) -> str:
-        """  """
-        if self._subject_separator_index is None:
+        """ Obtain the Separator between the Subject and Content.
+            Is empty str when separator not found.
+        """
+        if (index := self._subject_separator_index) is None:
             return ""
-        return self._updated_line[self._subject_separator_index]
+        return self._updated_line[index]
 
     def get_content(self) -> str | None:
         """ Obtain the Content section of the Commit Line.
@@ -93,35 +77,6 @@ class CommitLine:
         return self._updated_line
 
 
-def choose_separator(
-        line_a: CommitLine,
-        line_b: CommitLine
-) -> str:
-    """ Choose the separator to use for the merged line.
-    """
-    sep_a = line_a.get_separator()
-    sep_b = line_b.get_separator()
-    # If both lines have the same separator, use that separator
-    if sep_a == sep_b:
-        return sep_a
-    # If one line has no separator, use the other line's separator
-    if len(sep_a) < 1:
-        if len(sep_b) < 1:
-            # If neither line has a separator, use the default separator
-            return subject_separators[0]
-        return sep_b
-    if len(sep_b) < 1:
-        return sep_a
-    # If both lines have separators, use the separator that appears first in the subject_separators tuple
-    for sep in subject_separators:
-        if sep_a == sep:
-            return sep_a
-        if sep_b == sep:
-            return sep_b
-    # If none of the above conditions are met, use the first separator in the subject_separators tuple
-    return subject_separators[0]
-
-
 def merge_lines(
         line_a: CommitLine,
         line_b: CommitLine
@@ -129,7 +84,7 @@ def merge_lines(
     """ Merge two Commit Lines into one.
     """
     subject = line_a.get_subject()
-    separator = choose_separator(line_a, line_b)
+    separator = _choose_separator(line_a, line_b)
     # Compare the content of the two lines
     content_a = line_a.get_content()
     content_b = line_b.get_content()
@@ -178,3 +133,48 @@ def merge_lines(
         else:
             new_line = str.format(f"{subject} {separator} {content}")
     return CommitLine(new_line)
+
+
+def _choose_separator(
+        line_a: CommitLine,
+        line_b: CommitLine
+) -> str:
+    """ Choose the separator to use for the merged line.
+    """
+    sep_a = line_a.get_separator()
+    sep_b = line_b.get_separator()
+    # If both lines have the same separator, use that separator
+    if sep_a == sep_b:
+        return sep_a
+    # If one line has no separator, use the other line's separator
+    if len(sep_a) < 1:
+        if len(sep_b) < 1:
+            # If neither line has a separator, use the default separator
+            return subject_separators[0]
+        return sep_b
+    if len(sep_b) < 1:
+        return sep_a
+    # If both lines have separators, use the separator that appears first in the subject_separators tuple
+    for sep in subject_separators:
+        if sep_a == sep:
+            return sep_a
+        if sep_b == sep:
+            return sep_b
+    # If none of the above conditions are met, use the first separator in the subject_separators tuple
+    return subject_separators[0]
+
+
+def find_subject_separator(
+    line: str
+) -> int | None:
+    """ Find the Subject separator.
+        Returns None if separator not found.
+    """
+    idx_list = (line.find(sep) for sep in subject_separators)
+    min_idx = -1
+    for i in idx_list:
+        if min_subject_length <= i:
+            if min_idx == -1 or i < min_idx:
+                min_idx = i
+    # Only Return Positive Indices
+    return min_idx if min_idx >= min_subject_length else None

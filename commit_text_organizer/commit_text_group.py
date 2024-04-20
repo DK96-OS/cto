@@ -1,16 +1,15 @@
-""" Container for a category of text """
-from text.commit_line import CommitLine, merge_lines
+"""Container for a category of text
+"""
+from commit_text_organizer.commit_line import CommitLine, merge_lines
 
 
 def strip_header(
         text: str
 ) -> str:
     """ Headers are the High Level Labels on Groups.
-        Remove any decoration from a Header.
+        Remove any leading or trailing whitespace.
     """
-    # Remove any leading or trailing whitespace
-    text = text.strip()
-    return text.lstrip('\*').strip(' ')
+    return text.strip().lstrip('\*').strip(' ')
 
 
 class CommitTextGroup:
@@ -115,15 +114,11 @@ class CommitTextGroup:
     def get_lines_as_commit_line_array(self) -> list[CommitLine]:
         """ Obtain all of the Lines in the Group as a List of CommitLine objects.
         """
-        if 0 == len(self._commit_lines):
-            return []
         return [s for s in self._commit_lines]
 
     def get_lines_as_str_array(self) -> list[str]:
         """ Obtain all of the Lines in the Group as a List of Strings.
         """
-        if 0 == len(self._commit_lines):
-            return []
         return [str(s) for s in self._commit_lines]
 
     def __str__(self):
