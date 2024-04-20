@@ -2,8 +2,8 @@
 import os
 import unittest
 
-from files.io import read_file
-from text.commit_text_organizer import CommitTextOrganizer
+from tests.cto_samples import _read_file
+from commit_text_organizer.commit_text_organizer import CommitTextOrganizer
 
 
 def assert_sample_expectations(
@@ -36,7 +36,7 @@ def load_new_cto(
     """ Load the sample with the given id from the file.
     """
     file_name = str.format(f"{file_prefix}{sample_id}.in")
-    input_data = read_file(file_name)
+    input_data = _read_file(file_name)
     if input_data is None:
         print("Tried to load: " + file_name)
         raise AssertionError(str.format(f"Sample IN #{sample_id} could Not be loaded"))
@@ -52,7 +52,7 @@ def load_sample_output(
 ) -> str:
     """ Load the sample output """
     file_name = str.format(f"{file_prefix}{sample_id}.expect")
-    output_data = read_file(file_name)
+    output_data = _read_file(file_name)
     if output_data is None:
         raise AssertionError(f"Sample OUT #{sample_id} could Not be loaded")
     return output_data
