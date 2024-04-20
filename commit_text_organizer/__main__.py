@@ -2,23 +2,16 @@
 from pathlib import Path
 from sys import argv
 
-from files.io import read_file, write_file
-from files.names import create_new_file_name
-from text import process_with_cto
+from commit_text_organizer.argument_parser import validate_input
+from commit_text_organizer import process_with_cto
 
 
 def main():
-    input_file = argv[1:][0] # Filename
-    output_file = create_new_file_name(input_file, "-org")
-    # Load the Input File
-    if (input_data := read_file(input_file)) is None:
-        exit('Failed to Read Input File')
-    # Process Text
+    input_data = validate_input(argv[1:])
     output_data = process_with_cto(input_data)
-    # If output is empty, prevent file write
     if output_data is None or len(output_data) == 0:
         exit("CTO returned zero Text!")
-    write_file(output_file, output_data)
+    print(output_data)
 
 
 if __name__ == "__main__":
