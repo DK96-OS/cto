@@ -1,10 +1,14 @@
 ## Commit Text Organizer
-Do you like to organize your commit messages? __CTO does!__
+A Text Processor targeted at organizing Commit Messages.
 
-CTO likes commit messages in a readable format. The format is called FOCI.
+Do you like to organize your commit messages? __CTO does!__ CTO operates on commit messages structured in a simple readable format.
+
+The input messages are cleaned up, condensed, and sorted alphabetically before being returned.
 
 ### File Oriented Commit Information (FOCI)
-___A Commit may target multiple files, but it has only one purpose.___
+FOCI is inspired by the following statement:
+
+___A Commit may change many files, but it has just one purpose.___
 
 <details>
 <summary>FOCI Concepts</summary>
@@ -46,7 +50,7 @@ Then, the lines immediately below the header are included in that group. These a
 </details>
 <details>
 <summary>A Commit Line starts with a subject, corresponding to a file, or group of files.</summary>
-     
+
 ### Subjects (Files or Groups of Files)
 A Subject is the start of a Commit Line in a header Group. It will usually describe a change in a single file, but you can group files into the subject.
 
@@ -67,7 +71,7 @@ If a separator appears more than once in a Commit Line, it is ignored.
 ### Commit Line Prefix Shortcuts
 To reduce typing the same word for so many file changes (such as "Update", or "Create"), CTO includes a Line Prefix recognition and replacement feature.
 
-     cto/text/commit_line_prefixes.py  
+     cto/text/commit_line_prefixes.py
 
 It recognizes prefixes (that you can change) and replaces them with the most commonly used words.
 
