@@ -23,16 +23,16 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Dependencies
+      - name: Install Test Framework Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pytest pytest-cov
 
       - name: Run unit tests
-        run: pytest tests/ --cov=files --cov=text --cov-report=html --cov-fail-under=84
+        run: pytest tests/ --cov=files --cov=text --cov-report=html --cov-fail-under=91
 
       - name: Upload Test Coverage Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cto-coverage
           path: htmlcov/
