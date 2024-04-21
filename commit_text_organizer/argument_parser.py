@@ -8,9 +8,9 @@ from argparse import ArgumentParser
 from sys import exit
 from typing import Optional
 
-from commit_text_organizer.argument_data import ArgumentData
-from commit_text_organizer.input_data import InputData
-from commit_text_organizer.file_validation import validate_input_file, validate_name
+from .argument_data import ArgumentData
+from .input_data import InputData
+from .file_validation import validate_input_file, validate_name
 
 
 def validate_input(arguments: Optional[list[str]] = None) -> InputData:
@@ -21,7 +21,7 @@ def validate_input(arguments: Optional[list[str]] = None) -> InputData:
     - args: A list of argument strings.
 
     Returns:
-    ArgumentData : Container for Valid Argument Data.
+    InputData : Container for Valid Argument Data.
     """
     if arguments is None or len(arguments) == 0:
         exit("No Arguments given.")

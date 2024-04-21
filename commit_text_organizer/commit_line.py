@@ -1,6 +1,6 @@
 """ Commit Line Class and supporting methods.
 """
-from commit_text_organizer.commit_line_prefixes import map_line_prefix
+from .commit_line_prefixes import map_line_prefix
 
 # Subject is separated from content by a separator
 subject_separators = ('-', '+')
