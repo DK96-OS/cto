@@ -126,24 +126,25 @@ Header 2:
 * Remove OldFile.c
 ```
 
-## How It Works
-1. __Launch Script__: The user starts by running the launch.py script, which prompts for a file path. This file contains the commit messages to be organized.
+## How To Use It
+0. __Install__: Use `python -m pip install commit-text-organizer`, or manage it manually.
+1. __Main Script__: Run the script with a file path argument containing the commit messages.
 2. __Commit Message Structure__: Commit messages are organized into groups defined by headers (e.g., "Database Migration 32"). Each group contains commit lines starting with a star (*) and details changes to subjects (files or groups of files).
 3. __Subject Matching and Content Details__: Commit lines within the same header group can be merged if their subjects match. The tool sorts and joins content details alphabetically, separated by a comma-space.
 4. __Line Prefix Shortcuts__: To simplify repetitive prefixes like "Update" or "Create", CTO includes a feature to recognize and replace line prefix shortcuts with their full forms (e.g., "c" for "Create").
-5. __Sorting and Output__: The tool sorts groups and lines within groups alphabetically. The output is written to a new file with a "-org" suffix, containing the organized commit messages.
+5. __Sorting and Output__: The tool sorts groups and lines within groups alphabetically.
+6. __Output__: The output is printed to the standard output. Pipe it to a file, or it will be printed on screen.
 
 ### Requirements
 Python 3.10 or higher is required to run __Commit-Text-Organizer__.
 This is because the Union Type Operator is used (not available in 3.9 or earlier).
 
-### Windows Compatibility
-The file extension must be (.txt).
+### Program Architecture
+All python modules are contained in the `commit_text_organizer` package. In the following diagram, modules are grouped into symbolic packages for better understanding.
+
+![cto](https://github.com/DK96-OS/cto/assets/69859316/67e1735b-6529-4f4e-9360-a7dfe0264431)
 
 ## Project Vision
-To enhance developer usability and broaden its applicability.
-Enhancements aim to make CTO more versatile, user-friendly, and integrated with developers' workflows.
-- Develop a more robust CLI experience
-- Introduce command-line help documentation
-- Implement a feature to directly read commit messages from a branch
+Enhancements should aim to make CTO more versatile, user-friendly, and integrated with workflows. Examples:
+- Run git subprocess and read commit messages from a branch instead of a file
 - Allow users to add their own prefix shortcuts in a config file
