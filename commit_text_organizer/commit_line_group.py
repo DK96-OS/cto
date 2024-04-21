@@ -1,6 +1,6 @@
 """Container for a category of text
 """
-from commit_text_organizer.commit_line import CommitLine, merge_lines
+from .commit_line import CommitLine, merge_lines
 
 
 def strip_header(
@@ -12,7 +12,7 @@ def strip_header(
     return text.strip().lstrip('\*').strip(' ')
 
 
-class CommitTextGroup:
+class CommitLineGroup:
     """ A group of related commit messages.
     """
 
@@ -134,14 +134,14 @@ class CommitTextGroup:
 
 
 def merge_groups(
-        self: CommitTextGroup,
-        other: CommitTextGroup
-) -> CommitTextGroup:
+        self: CommitLineGroup,
+        other: CommitLineGroup
+) -> CommitLineGroup:
     """ Combine Two Text Groups into a new Text Group.
         Assumes that the Headers are equal, uses the first Group's header.
     """
     # Create a new group to avoid modifying either input group
-    new_group = CommitTextGroup(
+    new_group = CommitLineGroup(
         self.get_header(),
         self.get_lines_as_commit_line_array()
     )
