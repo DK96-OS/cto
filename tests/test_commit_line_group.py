@@ -1,5 +1,6 @@
 import unittest
-from text.commit_text_group import *
+
+from commit_text_organizer.commit_line_group import *
 
 
 input_text_1 = """
@@ -27,8 +28,8 @@ class TestCommitTextGroup(unittest.TestCase):
 		self.header_2 = "Header 2:"
 		self.lines_1 = input_text_1.split('\n')
 		self.lines_2 = input_text_2.split('\n')
-		self.c_group_1 = CommitTextGroup(self.header_1, self.lines_1)
-		self.c_group_2 = CommitTextGroup(self.header_2, self.lines_2)
+		self.c_group_1 = CommitLineGroup(self.header_1, self.lines_1)
+		self.c_group_2 = CommitLineGroup(self.header_2, self.lines_2)
 
 	def test_initial_conditions(self):
 		self.assertEqual(
@@ -51,7 +52,7 @@ class TestCommitTextGroup(unittest.TestCase):
 		)
 
 	def test_get_header_none(self):
-		group = CommitTextGroup(None, self.lines_1)
+		group = CommitLineGroup(None, self.lines_1)
 		self.assertEqual(
 			"", group.get_header()
 		)
@@ -98,7 +99,7 @@ class TestCommitTextGroup(unittest.TestCase):
 		)
 
 	def test_get_line_count_group_3(self):
-		cto = CommitTextGroup(None, input_text_3.split('\n'))
+		cto = CommitLineGroup(None, input_text_3.split('\n'))
 		self.assertEqual(
 			3, cto.get_line_count()
 		)
@@ -123,7 +124,7 @@ class TestCommitTextGroup(unittest.TestCase):
 		)
 
 	def test_string_method_group_3(self):
-		cto = CommitTextGroup(None, input_text_3.split('\n'))
+		cto = CommitLineGroup(None, input_text_3.split('\n'))
 		initial_str = str(cto)
 		cto.autoprocess()
 		self.assertNotEqual(
@@ -131,7 +132,7 @@ class TestCommitTextGroup(unittest.TestCase):
 		)
 
 	def test_string_method_no_header(self):
-		g = CommitTextGroup(None, self.lines_1)
+		g = CommitLineGroup(None, self.lines_1)
 		g.add_line(self.lines_1[1])
 		result_lines = (str(g)).split('\n')
 		self.assertEqual(
@@ -149,27 +150,27 @@ class TestCommitTextGroup(unittest.TestCase):
 
 
 def test_get_lines_as_commit_line_array_empty_returns_empty_list():
-	inst = CommitTextGroup(None, [])
+	inst = CommitLineGroup(None, [])
 	assert inst.get_lines_as_commit_line_array() == []
 
 
 def test_get_lines_as_str_array_empty_returns_empty_list():
-	inst = CommitTextGroup(None, [])
+	inst = CommitLineGroup(None, [])
 	assert inst.get_lines_as_str_array() == []
 
 
 def test_get_lines_as_str_array_single_element_returns_element():
 	input_line = '*u my_file.py'
 	expected_line = '* Update my_file.py'
-	inst = CommitTextGroup(None, [input_line])
+	inst = CommitLineGroup(None, [input_line])
 	assert inst.get_lines_as_str_array() == [expected_line]
 
 
 def test_add_line_empty_str_returns_false():
-	inst = CommitTextGroup(None, [])
+	inst = CommitLineGroup(None, [])
 	assert inst.add_line('') == False
 
 
 def test_add_line_unknown_type_returns_false():
-	inst = CommitTextGroup(None, [])
+	inst = CommitLineGroup(None, [])
 	assert inst.add_line(1) == False

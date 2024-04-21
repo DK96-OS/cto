@@ -1,8 +1,10 @@
-""" Processes an input string into groups of text """
-from .commit_text_group import CommitTextGroup, merge_groups
+"""Processes an input string into groups of text.
+"""
+from .commit_line_group import CommitLineGroup, merge_groups
+from .input_data import InputData
 
 
-class CommitTextOrganizer:
+class CommitOrganizer:
 	""" The High level data structure that makes it easy to organize commit text.
 	"""
 
@@ -30,7 +32,7 @@ class CommitTextOrganizer:
 					active_group = None
 			elif li.endswith(':'):
 				# Header
-				active_group = CommitTextGroup(li)
+				active_group = CommitLineGroup(li)
 				self.groups.append(active_group)
 				newline_count = 0
 			elif li.startswith('*'):
@@ -38,7 +40,7 @@ class CommitTextOrganizer:
 				if active_group is not None:
 					active_group.add_line(li)
 				else:
-					active_group = CommitTextGroup(
+					active_group = CommitLineGroup(
 						None, (li.strip(),)
 					)
 					self.groups.append(active_group)
@@ -58,7 +60,7 @@ class CommitTextOrganizer:
 		""" Add a line to the PullRequest Group.
 		"""
 		if self.pr_group is None:
-			self.pr_group = CommitTextGroup("Pull Requests:")
+			self.pr_group = CommitLineGroup("Pull Requests:")
 			self.groups.append(self.pr_group)
 		# Prepend a * to the line
 		self.pr_group.add_line('* ' + line)
@@ -78,7 +80,7 @@ class CommitTextOrganizer:
 	def sort(self):
 		""" Sort Text Groups by Header.
 		"""
-		self.groups.sort(key=CommitTextGroup.get_header)
+		self.groups.sort(key=CommitLineGroup.get_header)
 		i = 0
 		while i + 1 < len(self.groups):
 			g0 = self.groups[i]
@@ -115,3 +117,12 @@ class CommitTextOrganizer:
 				group_string += '\n'
 			package += group_string + "\n"
 		return package
+
+
+def process_with_cto(input_data: InputData) -> str:
+    """Process the Input Text with Commit Text Organizer
+    """
+    cto = CommitOrganizer()
+    cto.receive_data(input_data.text_input)
+    cto.autoprocess() # Default Processing Operations
+    return cto.output_all_groups()

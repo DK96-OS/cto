@@ -1,5 +1,6 @@
 import unittest
-from text.commit_text_group import *
+
+from commit_text_organizer.commit_line_group import *
 
 input_text_challenge_2 = tuple("""
 * Third Challenge-a,  c
@@ -8,7 +9,7 @@ input_text_challenge_2 = tuple("""
 
 
 class TestCommitTextGroupChallenges(unittest.TestCase):
-	
+
 	def setUp(self):
 		pass
 
@@ -20,6 +21,6 @@ class TestCommitTextGroupChallenges(unittest.TestCase):
 		print([str(x.get_subject()) for x in lines])
 		print([str(x.get_content()) for x in lines])
 
-		cto = CommitTextGroup(None, input_text_challenge_2)
+		cto = CommitLineGroup(None, input_text_challenge_2)
 		cto.autoprocess()
 		print(str(cto))
