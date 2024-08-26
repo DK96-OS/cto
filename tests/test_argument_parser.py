@@ -21,7 +21,7 @@ from commit_text_organizer.input_data import InputData
 def test_validate_arguments_raises_value_error(test_input):
     with pytest.raises(SystemExit) as exit_info:
         _validate_arguments(test_input)
-    assert exit_info.type == SystemExit
+    assert exit_info.type is SystemExit
 
 
 @pytest.mark.parametrize(
@@ -47,7 +47,7 @@ def test_validate_arguments_returns_data(test_input, expect):
 def test_validate_input_arguments_raises_value_error(test_input):
     with pytest.raises(SystemExit) as exit_info:
         validate_input(test_input)
-    assert exit_info.type == SystemExit
+    assert exit_info.type is SystemExit
 
 
 @pytest.mark.parametrize(

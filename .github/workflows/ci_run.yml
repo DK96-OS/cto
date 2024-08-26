@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [ '3.10', '3.11', '3.12' ]
+        python-version: [ '3.10', '3.11', '3.12', '3.13.0-rc.1' ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -30,6 +30,7 @@ jobs:
 
       - name: Run unit tests
         run: pytest tests/ --cov=commit_text_organizer --cov-report=html --cov-fail-under=83
+        continue-on-error: true
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4

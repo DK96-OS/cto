@@ -1,6 +1,6 @@
 import unittest
 
-from commit_text_organizer.commit_line_group import *
+from commit_text_organizer.commit_line_group import CommitLineGroup
 
 
 input_text_1 = """
@@ -168,9 +168,9 @@ def test_get_lines_as_str_array_single_element_returns_element():
 
 def test_add_line_empty_str_returns_false():
 	inst = CommitLineGroup(None, [])
-	assert inst.add_line('') == False
+	assert not inst.add_line('')
 
 
 def test_add_line_unknown_type_returns_false():
 	inst = CommitLineGroup(None, [])
-	assert inst.add_line(1) == False
+	assert not inst.add_line(1)
