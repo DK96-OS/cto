@@ -1,6 +1,7 @@
 import unittest
 
-from commit_text_organizer.commit_line_group import *
+from commit_text_organizer.commit_line_group import CommitLineGroup
+from commit_text_organizer.commit_line import CommitLine
 
 input_text_challenge_2 = tuple("""
 * Third Challenge-a,  c

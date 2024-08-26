@@ -26,7 +26,7 @@ def test_validate_input_file_does_not_exist_raises_exit():
         try:
             validate_input_file("file_name")
             assert False
-        except SystemExit as e:
+        except SystemExit:
             assert True
 
 
@@ -37,7 +37,7 @@ def test_validate_input_file_is_empty_raises_exit():
         try:
             validate_input_file("file_name")
             assert False
-        except SystemExit as e:
+        except SystemExit:
             assert True
 
 
@@ -68,7 +68,7 @@ def test_validate_input_file_is_empty_returns_none(test_input, expect):
     ]
 )
 def test_validate_name_returns_false(test_input):
-    assert validate_name(test_input) == False
+    assert not validate_name(test_input)
 
 
 @pytest.mark.parametrize(
@@ -80,4 +80,4 @@ def test_validate_name_returns_false(test_input):
     ]
 )
 def test_validate_name_returns_true(test_input):
-    assert validate_name(test_input) == True
+    assert validate_name(test_input)

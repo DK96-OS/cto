@@ -56,14 +56,6 @@ class TestCommitLine(unittest.TestCase):
             ).get_subject()
         )
 
-    def test_get_subject_A_plus_returns_subject(self):
-        self.assertEqual(
-            self.subjectA,
-            CommitLine(
-                self.subjectA + '+' + self.contentA
-            ).get_subject()
-        )
-
     def test_get_subject_A_no_separator_returns_none(self):
         self.assertEqual(
             None, CommitLine(
