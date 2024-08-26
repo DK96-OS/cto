@@ -37,3 +37,6 @@ jobs:
         with:
           name: cto-${{ matrix.os }}-${{ matrix.python-version }}-coverage
           path: htmlcov/
+
+      - name: Check Success
+        if: ${{ success() }}
