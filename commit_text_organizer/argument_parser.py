@@ -28,7 +28,7 @@ def validate_input(arguments: Optional[list[str]] = None) -> InputData:
     # Initialize the Parser and Parse Immediately
     try:
         parsed_args = _define_arguments().parse_args(arguments)
-    except SystemExit as e:
+    except SystemExit:
         exit("Unable to Parse Arguments.")
     # Validate the Arguments
     argument_data = _validate_arguments(
