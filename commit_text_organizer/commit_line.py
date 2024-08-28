@@ -11,42 +11,45 @@ min_subject_length = 2
 
 class CommitLine:
     """ Represents a Line in a Commit Message.
+
+    Internal Properties:
+    - _subject (str | None): The first section of the line before the separator (the whole line), or None
+    - _content (str | None): The section of the string after the first separator, or None.
+    - _subject_separator_index (int | None): The index of the separator in the updated_line, or None.
+    - _init_line (str): The initial line passed to the CommitLine constructor.
+    - _updated_line (str): The processed init line (strip space, map_line_prefix).
     """
 
     def __init__(
-            self, line: str
+        self, line: str
     ):
-        self._init_line = line
-        self._updated_line = line.strip()
-        # Begin Processing the Line
+        """
+        Parameters:
+        - line (str): The string containing the commit line input.
+        """
+        updated_line = line.strip()
         # Expand Commit Line Prefixes
-        expanded_line = map_line_prefix(self._updated_line)
-        if expanded_line is not None:
-            self._updated_line = expanded_line
+        if (expanded_line := map_line_prefix(updated_line)) is not None:
+            updated_line = expanded_line
         # Find the Subject Separator
-        separator_index = find_subject_separator(
-            self._updated_line
-        )
-        self._subject_separator_index = separator_index
-        if separator_index is None:
-            self._subject = None
-            if len(self._updated_line) < 1:
-                self._content = None
-            else:
-                self._content = self._updated_line
+        if (separator_index := find_subject_separator(updated_line)) is None:
+            # When there is no separator, Subject is given the line
+            self._subject = None if len(updated_line) < 1 else updated_line
+            self._content = None
+        elif separator_index + 1 >= len(updated_line):
+            # Separator at end of line
+            self._subject = updated_line[:separator_index].rstrip()
+            self._content = None
         else:
-            # Check if content is empty or only contains whitespace
-            if separator_index + 1 >= len(self._updated_line):
-                self._subject = self._updated_line[:separator_index].rstrip()
-                self._content = None
-            else:
-                self._subject = self._updated_line[:separator_index].rstrip()
-                if len(self._subject) < 1:
-                    self._subject = None
-                self._content = self._updated_line[separator_index + 1:].lstrip()
-                # Check if content is empty or only contains whitespace
-                if len(self._content) < 1:
-                    self._content = None
+            # Check Subject
+            subject_line = updated_line[:separator_index].rstrip()
+            self._subject = None if len(subject_line) < 1 else subject_line
+            # Check Content
+            content_line = updated_line[separator_index + 1:].lstrip()
+            self._content = None if len(content_line) < 1 else content_line
+        self._subject_separator_index = separator_index
+        self._init_line = line
+        self._updated_line = updated_line
 
     def get_subject(self) -> str | None:
         """ Obtain the Subject, if present.
@@ -62,7 +65,7 @@ class CommitLine:
         return self._updated_line[index]
 
     def get_content(self) -> str | None:
-        """ Obtain the Content section of the Commit Line.
+        """ Obtain the Content section of the Commit Line, if present.
         """
         return self._content
 
@@ -95,7 +98,7 @@ def merge_lines(
             content_a = content_a[:-1]
         # If the content of the first line ends with a space, remove the space
         if content_a.endswith(' '):
-            content_a = content_a[:-1]
+            content_a = content_a.rstrip()
         # If the content of the first line ends with a comma, remove the comma
         if content_a.endswith(','):
             content_a = content_a[:-1]
@@ -107,7 +110,7 @@ def merge_lines(
             content_b = content_b[1:]
         # If the content of the second line starts with a space, remove the space
         if content_b.startswith(' '):
-            content_b = content_b[1:]
+            content_b = content_b.lstrip()
         # If the content of the second line starts with a comma, remove the comma
         if content_b.startswith(','):
             content_b = content_b[1:]
@@ -136,8 +139,8 @@ def merge_lines(
 
 
 def _choose_separator(
-        line_a: CommitLine,
-        line_b: CommitLine
+    line_a: CommitLine,
+    line_b: CommitLine,
 ) -> str:
     """ Choose the separator to use for the merged line.
     """

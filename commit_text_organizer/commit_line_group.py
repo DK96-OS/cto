@@ -21,12 +21,17 @@ class CommitLineGroup:
             header: str | None,
             lines: list[str] | list[CommitLine] | tuple[str] | tuple[CommitLine] = None
     ):
+        """
+        Parameters:
+        - header (str | None): The Header string for the Group.
+        - lines (list[str] | list[CommitLine] | tuple[str] | tuple[CommitLine]): A collection of string or CommitLine objects.
+        """
         if header is None or len(header) == 0:
             self._header = None
         else:
             self._header = strip_header(header)
         # Convert Text Lines into Commit Lines
-        self._commit_lines = []
+        self._commit_lines: list[CommitLine] = []
         if lines is None:
             return
         elif isinstance(lines, list):

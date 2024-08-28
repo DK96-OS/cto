@@ -9,6 +9,11 @@ class CommitOrganizer:
 	"""
 
 	def __init__(self):
+		"""
+		Properties:
+		- groups (list[CommitLineGroup]): The list of Commit Line Groups.
+		- pr_group (CommitLineGroup | None): Used to collect PR lines, and merge them into one group.
+		"""
 		self.groups = []
 		# The PR group will be added to the Groups, so it can be sorted
 		self.pr_group = None
@@ -69,6 +74,7 @@ class CommitOrganizer:
 		""" Removes all temporary data.
 		"""
 		self.groups.clear()
+		self.pr_group = None
 
 	def autoprocess(self):
 		""" Perform a series of reasonable processes, including:
