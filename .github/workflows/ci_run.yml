@@ -30,13 +30,10 @@ jobs:
 
       - name: Run unit tests
         run: pytest tests/ --cov=commit_text_organizer --cov-report=html --cov-fail-under=83
-        continue-on-error: true
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: cto-${{ matrix.os }}-${{ matrix.python-version }}-coverage
           path: htmlcov/
-
-      - name: Check Success
-        if: ${{ success() }}
