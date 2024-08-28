@@ -33,34 +33,52 @@ class TestCommitLine(unittest.TestCase):
         )
 
     def test_get_subject_A_minus_returns_subject(self):
+        test_input = f'{self.subjectA} - {self.contentA}'
         self.assertEqual(
             self.subjectA,
-            CommitLine(
-                self.subjectA + ' - ' + self.contentA
-            ).get_subject()
+            CommitLine(test_input).get_subject()
         )
 
     def test_get_subject_A_minus_no_space_returns_subject(self):
+        test_input = f'{self.subjectA}-{self.contentA}'
         self.assertEqual(
             self.subjectA,
-            CommitLine(
-                self.subjectA + '-' + self.contentA
-            ).get_subject()
+            CommitLine(test_input).get_subject()
         )
 
     def test_get_subject_A_plus_returns_subject(self):
+        test_input = f'{self.subjectA} + {self.contentA}'
         self.assertEqual(
             self.subjectA,
-            CommitLine(
-                self.subjectA + ' + ' + self.contentA
-            ).get_subject()
+            CommitLine(test_input).get_subject()
         )
 
-    def test_get_subject_A_no_separator_returns_none(self):
+    def test_get_subject_A_no_separator_returns_line(self):
+        test_input = f'{self.subjectA} {self.contentA}'
         self.assertEqual(
-            None, CommitLine(
-                self.subjectA + ' ' + self.contentA
-            ).get_subject()
+            test_input,
+            CommitLine(test_input).get_subject()
+        )
+
+    def test_get_subject_A_no_separator_end_space_returns_updated_line(self):
+        test_input = f'{self.subjectA} {self.contentA} '
+        self.assertEqual(
+            test_input[:-1],
+            CommitLine(test_input).get_subject()
+        )
+
+    def test_get_subject_A_no_separator_start_space_returns_updated_line(self):
+        test_input = f' {self.subjectA} {self.contentA}'
+        self.assertEqual(
+            test_input[1:],
+            CommitLine(test_input).get_subject()
+        )
+
+    def test_get_subject_A_no_separator_start_and_end_spaces_returns_updated_line(self):
+        test_input = f' {self.subjectA} {self.contentA} '
+        self.assertEqual(
+            test_input[1:-1],
+            CommitLine(test_input).get_subject()
         )
 
     def test_get_subject_empty_line_returns_none(self):
@@ -90,13 +108,10 @@ class TestCommitLine(unittest.TestCase):
             ).get_content()
         )
 
-    def test_get_content_no_separator_returns_line(self):
-        line = self.subjectA + ' ' + self.contentA
-        self.assertEqual(
-            line,
-            CommitLine(
-                self.subjectA + ' ' + self.contentA
-            ).get_content()
+    def test_get_content_no_separator_returns_none(self):
+        test_input = self.subjectA + ' ' + self.contentA
+        self.assertIsNone(
+            CommitLine(test_input).get_content()
         )
 
     def test_get_content_empty_line_returns_none(self):
@@ -148,3 +163,13 @@ def test_find_subject_separator_():
 )
 def test_find_subject_separator_without_one_returns_none(test_input):
     assert find_subject_separator(test_input) is None
+
+
+def test_merge_lines_one_has_no_content():
+    cl_no_content = CommitLine('*u my_file.py')
+    cl_with_content = CommitLine('*u my_file.py - add method main, add doc')
+    # First, ensure that the subjects match
+    assert cl_no_content.get_subject() == cl_with_content.get_subject()
+    #
+    result = merge_lines(cl_no_content, cl_with_content)
+    assert result.get_input_line() == '* Update my_file.py - add method main, add doc'

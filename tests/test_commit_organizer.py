@@ -35,9 +35,25 @@ class TestCommitOrganizer(unittest.TestCase):
 	def test_add_pull_request_line_then_output_all_groups_returns_pr_group(self):
 		input_text = "Debug Line Number (#8)"
 		self.inst.add_pull_request_line(input_text)
+		# Check instance state
+		assert len(self.inst.groups) == 1
+		assert self.inst.pr_group is not None
 		# Check output
 		result = self.inst.output_all_groups()
 		self.assertEqual(result, f"Pull Requests:\n* {input_text}\n")
+
+	def test_clear_after_receive_data(self):
+		input_text = ""
+		self.inst.receive_data(input_text)
+		self.inst.clear()
+		assert self.inst.groups == []
+		assert self.inst.pr_group is None
+
+	def test_clear_after_add_pr_line(self):
+		self.inst.add_pull_request_line("PR (# 4)")
+		self.inst.clear()
+		assert self.inst.groups == []
+		assert self.inst.pr_group is None
 
 
 if __name__ == '__main__':

@@ -15,6 +15,9 @@ class TestBasic(unittest.TestCase):
     def test_sample_2(self):
         assert_sample_expectations(self, _sample_prefix, 2)
 
+    def test_sample_3(self):
+        assert_sample_expectations(self, _sample_prefix, 3)
+
 
 if __name__ == '__main__':
     unittest.main()
