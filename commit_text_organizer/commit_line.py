@@ -81,18 +81,20 @@ class CommitLine:
 
 
 def merge_lines(
-        line_a: CommitLine,
-        line_b: CommitLine
+    line_a: CommitLine,
+    line_b: CommitLine,
 ) -> CommitLine:
     """ Merge two Commit Lines into one.
     """
-    subject = line_a.get_subject()
     separator = _choose_separator(line_a, line_b)
     # Compare the content of the two lines
     content_a = line_a.get_content()
     content_b = line_b.get_content()
+    # If Content is equal, drop one.
+    if content_a == content_b:
+        content = content_a
     # If both lines have content, merge the content
-    if content_a is not None and content_b is not None:
+    elif content_a is not None and content_b is not None:
         # If the content of the first line ends with a period, remove the period
         if content_a.endswith('.'):
             content_a = content_a[:-1]
@@ -107,7 +109,7 @@ def merge_lines(
             content_b = content_b[0].lower() + content_b[1:]
         # If the content of the second line starts with a period, remove the period
         if content_b.startswith('.'):
-            content_b = content_b[1:]
+            content_b = content_b[1:].lstrip()
         # If the content of the second line starts with a space, remove the space
         if content_b.startswith(' '):
             content_b = content_b.lstrip()
@@ -119,17 +121,11 @@ def merge_lines(
     # If only one line has content, use that content
     elif content_a is not None:
         content = content_a
-    elif content_b is not None:
-        content = content_b
-    # If neither line has content, use None
     else:
-        content = None
+        content = content_b
     # Create the new Commit Line
-    if subject is None:
-        if content is None:
-            new_line = ""
-        else:
-            new_line = content
+    if (subject := line_a.get_subject()) is None:
+        new_line = "" if content is None else content
     else:
         if content is None:
             new_line = subject
@@ -143,6 +139,7 @@ def _choose_separator(
     line_b: CommitLine,
 ) -> str:
     """ Choose the separator to use for the merged line.
+    - Defaults to the first element in the global subject_separators tuple.
     """
     sep_a = line_a.get_separator()
     sep_b = line_b.get_separator()
