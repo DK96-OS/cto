@@ -173,3 +173,10 @@ def test_merge_lines_one_has_no_content():
     #
     result = merge_lines(cl_no_content, cl_with_content)
     assert result.get_input_line() == '* Update my_file.py - add method main, add doc'
+
+
+def test_merge_lines_cl3_cl3_returns_cl3():
+    result = merge_lines(cl3, cl3)
+    assert result.get_subject() == cl3.get_subject()
+    assert result.get_content() == cl3.get_content()
+    assert result.get_separator() == cl3.get_separator()
