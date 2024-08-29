@@ -1,5 +1,6 @@
 """ Commit Line Class and supporting methods.
 """
+from typing import Literal
 from .commit_line_prefixes import map_line_prefix
 
 # Subject is separated from content by a separator
@@ -88,50 +89,47 @@ def merge_lines(
     """
     separator = _choose_separator(line_a, line_b)
     # Compare the content of the two lines
-    content_a = line_a.get_content()
-    content_b = line_b.get_content()
-    # If Content is equal, drop one.
-    if content_a == content_b:
-        content = content_a
-    # If both lines have content, merge the content
-    elif content_a is not None and content_b is not None:
-        # If the content of the first line ends with a period, remove the period
-        if content_a.endswith('.'):
-            content_a = content_a[:-1]
-        # If the content of the first line ends with a space, remove the space
-        if content_a.endswith(' '):
-            content_a = content_a.rstrip()
-        # If the content of the first line ends with a comma, remove the comma
-        if content_a.endswith(','):
-            content_a = content_a[:-1]
-        # If the content of the second line starts with a capital letter, convert the first letter to lowercase
-        if content_b[0].isupper():
-            content_b = content_b[0].lower() + content_b[1:]
-        # If the content of the second line starts with a period, remove the period
-        if content_b.startswith('.'):
-            content_b = content_b[1:].lstrip()
-        # If the content of the second line starts with a space, remove the space
-        if content_b.startswith(' '):
-            content_b = content_b.lstrip()
-        # If the content of the second line starts with a comma, remove the comma
-        if content_b.startswith(','):
-            content_b = content_b[1:]
-        # Ensure only one space between content_a and content_b
-        content = content_a + ', ' + content_b
-    # If only one line has content, use that content
-    elif content_a is not None:
-        content = content_a
-    else:
-        content = content_b
+    content = _merge_contents(line_a.get_content(), line_b.get_content())
+    if content is not None:
+        # Filter Duplicate Information
+        content = _filter_duplicate_items(content)
     # Create the new Commit Line
     if (subject := line_a.get_subject()) is None:
         new_line = "" if content is None else content
     else:
-        if content is None:
-            new_line = subject
-        else:
-            new_line = str.format(f"{subject} {separator} {content}")
+        new_line = subject if content is None else f"{subject} {separator} {content}"
     return CommitLine(new_line)
+
+
+def _merge_contents(
+    content_a: str | None,
+    content_b: str | None,
+    delimiter: Literal[',', '.'] = ',',
+) -> str | None:
+    """ Merge the Content sections of two CommitLines.
+    """
+    if content_b is None or content_a == content_b:
+        return content_a
+    if content_a is None:
+        return content_b
+    # When Content A ends with a delimiter, remove it
+    if content_a.endswith(delimiter):
+        content_a = content_a.rstrip(delimiter + ' ')
+    # Content B starts with a delimiter, remove it
+    if content_b.startswith(delimiter):
+        content_b = content_b.lstrip(delimiter + ' ')
+    return f"{content_a}{delimiter} {content_b}"
+
+
+def _filter_duplicate_items(
+    string_list: str,
+    delimiter: Literal[',', '.'] = ',',
+) -> str:
+    """ Filter substrings that are duplicated.
+    """
+    item_set = set(x.strip() for x in string_list.split(delimiter))
+    item_set.discard('')
+    return f"{delimiter} ".join(sorted(item_set))
 
 
 def _choose_separator(
