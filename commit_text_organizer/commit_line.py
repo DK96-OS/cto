@@ -1,5 +1,6 @@
 """ Commit Line Class and supporting methods.
 """
+from typing import Literal
 from .commit_line_prefixes import map_line_prefix
 
 # Subject is separated from content by a separator
@@ -56,12 +57,14 @@ class CommitLine:
         """
         return self._subject
 
-    def get_separator(self) -> str:
+    def get_separator(self) -> str | None:
         """ Obtain the Separator between the Subject and Content.
-            Is empty str when separator not found.
+        
+        Returns:
+        str | None - The separator character (str), or None.
         """
         if (index := self._subject_separator_index) is None:
-            return ""
+            return None
         return self._updated_line[index]
 
     def get_content(self) -> str | None:
@@ -81,61 +84,54 @@ class CommitLine:
 
 
 def merge_lines(
-        line_a: CommitLine,
-        line_b: CommitLine
+    line_a: CommitLine,
+    line_b: CommitLine,
 ) -> CommitLine:
     """ Merge two Commit Lines into one.
     """
-    subject = line_a.get_subject()
     separator = _choose_separator(line_a, line_b)
     # Compare the content of the two lines
-    content_a = line_a.get_content()
-    content_b = line_b.get_content()
-    # If both lines have content, merge the content
-    if content_a is not None and content_b is not None:
-        # If the content of the first line ends with a period, remove the period
-        if content_a.endswith('.'):
-            content_a = content_a[:-1]
-        # If the content of the first line ends with a space, remove the space
-        if content_a.endswith(' '):
-            content_a = content_a.rstrip()
-        # If the content of the first line ends with a comma, remove the comma
-        if content_a.endswith(','):
-            content_a = content_a[:-1]
-        # If the content of the second line starts with a capital letter, convert the first letter to lowercase
-        if content_b[0].isupper():
-            content_b = content_b[0].lower() + content_b[1:]
-        # If the content of the second line starts with a period, remove the period
-        if content_b.startswith('.'):
-            content_b = content_b[1:]
-        # If the content of the second line starts with a space, remove the space
-        if content_b.startswith(' '):
-            content_b = content_b.lstrip()
-        # If the content of the second line starts with a comma, remove the comma
-        if content_b.startswith(','):
-            content_b = content_b[1:]
-        # Ensure only one space between content_a and content_b
-        content = content_a + ', ' + content_b
-    # If only one line has content, use that content
-    elif content_a is not None:
-        content = content_a
-    elif content_b is not None:
-        content = content_b
-    # If neither line has content, use None
-    else:
-        content = None
+    content = _merge_contents(line_a.get_content(), line_b.get_content())
+    if content is not None:
+        # Filter Duplicate Information
+        content = _filter_duplicate_items(content)
     # Create the new Commit Line
-    if subject is None:
-        if content is None:
-            new_line = ""
-        else:
-            new_line = content
+    if (subject := line_a.get_subject()) is None:
+        new_line = "" if content is None else content
     else:
-        if content is None:
-            new_line = subject
-        else:
-            new_line = str.format(f"{subject} {separator} {content}")
+        new_line = subject if content is None else f"{subject} {separator} {content}"
     return CommitLine(new_line)
+
+
+def _merge_contents(
+    content_a: str | None,
+    content_b: str | None,
+    delimiter: Literal[',', '.'] = ',',
+) -> str | None:
+    """ Merge the Content sections of two CommitLines.
+    """
+    if content_b is None or content_a == content_b:
+        return content_a
+    if content_a is None:
+        return content_b
+    # When Content A ends with a delimiter, remove it
+    if content_a.endswith(delimiter):
+        content_a = content_a.rstrip(delimiter + ' ')
+    # Content B starts with a delimiter, remove it
+    if content_b.startswith(delimiter):
+        content_b = content_b.lstrip(delimiter + ' ')
+    return f"{content_a}{delimiter} {content_b}"
+
+
+def _filter_duplicate_items(
+    string_list: str,
+    delimiter: Literal[',', '.'] = ',',
+) -> str:
+    """ Filter substrings that are duplicated.
+    """
+    item_set = set(x.strip() for x in string_list.split(delimiter))
+    item_set.discard('')
+    return f"{delimiter} ".join(sorted(item_set))
 
 
 def _choose_separator(
@@ -143,27 +139,19 @@ def _choose_separator(
     line_b: CommitLine,
 ) -> str:
     """ Choose the separator to use for the merged line.
+    - Defaults to the first element in the global subject_separators tuple.
     """
     sep_a = line_a.get_separator()
-    sep_b = line_b.get_separator()
-    # If both lines have the same separator, use that separator
-    if sep_a == sep_b:
-        return sep_a
-    # If one line has no separator, use the other line's separator
-    if len(sep_a) < 1:
-        if len(sep_b) < 1:
-            # If neither line has a separator, use the default separator
-            return subject_separators[0]
+    if (sep_b := line_b.get_separator()) is None:
+        return subject_separators[0] if sep_a is None else sep_a
+    if sep_a is None or sep_a == sep_b:
         return sep_b
-    if len(sep_b) < 1:
-        return sep_a
-    # If both lines have separators, use the separator that appears first in the subject_separators tuple
+    # When both have separators, use first appearing in the subject_separators tuple
     for sep in subject_separators:
-        if sep_a == sep:
-            return sep_a
-        if sep_b == sep:
-            return sep_b
-    # If none of the above conditions are met, use the first separator in the subject_separators tuple
+        if sep in (sep_a, sep_b):
+            return sep
+    # If none of the above conditions are met,
+    # discard both and use the first in the subject_separators tuple
     return subject_separators[0]
 
 

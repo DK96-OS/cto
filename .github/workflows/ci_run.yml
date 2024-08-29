@@ -29,7 +29,7 @@ jobs:
           pip install pytest pytest-cov
 
       - name: Run unit tests
-        run: pytest tests/ --cov=commit_text_organizer --cov-report=html --cov-fail-under=83
+        run: pytest tests/ --cov=commit_text_organizer --cov-report=html --cov-fail-under=88
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4
