@@ -57,12 +57,14 @@ class CommitLine:
         """
         return self._subject
 
-    def get_separator(self) -> str:
+    def get_separator(self) -> str | None:
         """ Obtain the Separator between the Subject and Content.
-            Is empty str when separator not found.
+        
+        Returns:
+        str | None - The separator character (str), or None.
         """
         if (index := self._subject_separator_index) is None:
-            return ""
+            return None
         return self._updated_line[index]
 
     def get_content(self) -> str | None:
@@ -140,25 +142,16 @@ def _choose_separator(
     - Defaults to the first element in the global subject_separators tuple.
     """
     sep_a = line_a.get_separator()
-    sep_b = line_b.get_separator()
-    # If both lines have the same separator, use that separator
-    if sep_a == sep_b:
-        return sep_a
-    # If one line has no separator, use the other line's separator
-    if len(sep_a) < 1:
-        if len(sep_b) < 1:
-            # If neither line has a separator, use the default separator
-            return subject_separators[0]
+    if (sep_b := line_b.get_separator()) is None:
+        return subject_separators[0] if sep_a is None else sep_a
+    if sep_a is None or sep_a == sep_b:
         return sep_b
-    if len(sep_b) < 1:
-        return sep_a
-    # If both lines have separators, use the separator that appears first in the subject_separators tuple
+    # When both have separators, use first appearing in the subject_separators tuple
     for sep in subject_separators:
-        if sep_a == sep:
-            return sep_a
-        if sep_b == sep:
-            return sep_b
-    # If none of the above conditions are met, use the first separator in the subject_separators tuple
+        if sep in (sep_a, sep_b):
+            return sep
+    # If none of the above conditions are met,
+    # discard both and use the first in the subject_separators tuple
     return subject_separators[0]
 
 
