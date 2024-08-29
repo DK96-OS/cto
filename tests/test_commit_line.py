@@ -137,8 +137,8 @@ cl3 = CommitLine('*u my_file.py - add docs')
     "line1,line2,expected_content",
     [
         (cl1, cl2, '* Update my_file.py - add method main, remove method main'),
-        (cl1, cl3, '* Update my_file.py - add method main, add docs'),
-        (cl2, cl3, '* Update my_file.py - remove method main, add docs'),
+        (cl1, cl3, '* Update my_file.py - add docs, add method main'),
+        (cl2, cl3, '* Update my_file.py - add docs, remove method main'),
     ]
 )
 def test_merge_lines(line1, line2, expected_content):
@@ -167,12 +167,12 @@ def test_find_subject_separator_without_one_returns_none(test_input):
 
 def test_merge_lines_one_has_no_content():
     cl_no_content = CommitLine('*u my_file.py')
-    cl_with_content = CommitLine('*u my_file.py - add method main, add doc')
+    cl_with_content = CommitLine('*u my_file.py - add doc, add method main')
     # First, ensure that the subjects match
     assert cl_no_content.get_subject() == cl_with_content.get_subject()
     #
     result = merge_lines(cl_no_content, cl_with_content)
-    assert result.get_input_line() == '* Update my_file.py - add method main, add doc'
+    assert result.get_input_line() == '* Update my_file.py - add doc, add method main'
 
 
 def test_merge_lines_cl3_cl3_returns_cl3():

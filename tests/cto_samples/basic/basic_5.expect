@@ -3,6 +3,6 @@ Main:
 * Update init - add docs
 
 Tests:
-* Update test_change_data - add test cases, add docs
+* Update test_change_data - add docs, add test cases
 * Update test_changelist_data
 * Update test_init - add test cases
