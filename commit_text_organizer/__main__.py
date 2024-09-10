@@ -17,7 +17,7 @@ def main():
 if __name__ == "__main__":
     # Get the directory of the current file
     # __file__ is the path to the script being executed
-    current_directory = Path(__file__).resolve().parent
+    current_directory = Path(__file__).resolve().parent.parent
     # Add the directory to sys.path
     path.append(str(current_directory))
     main()
