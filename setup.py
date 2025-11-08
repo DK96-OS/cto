@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="commit-text-organizer",
-    version="1.1.2",
+    version="1.2",
     description="A Text Processor Targeted at Organizing Commit Messages.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -35,5 +35,6 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
     ],
 )
